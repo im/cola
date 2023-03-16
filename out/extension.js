@@ -4,7 +4,17 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const Words_1 = require("./Words");
 const Command = require("./Command");
+const config = vscode.workspace.getConfiguration();
+const KEYS = {
+    'dGFuZ3hpYW9taQ==': true,
+    'MTAwMDM2': true
+};
 function activate(context) {
+    // const secretKey = Buffer.from(config.cola.secretKey || '', 'utf-8').toString('base64')
+    // if (!KEYS[secretKey]) {
+    //     vscode.window.showInformationMessage('Please enter the secret key!');
+    //     return false
+    // }
     const { window, commands } = vscode;
     const { registerTreeDataProvider } = window;
     const { registerCommand } = commands;
@@ -14,9 +24,7 @@ function activate(context) {
     registerTreeDataProvider('cola-mastered', app.masteredWords);
     registerTreeDataProvider('cola-review', app.reviewWords);
     registerCommand(Command.REFRESH, () => { app.refresh(); });
-    registerCommand(Command.REVIEW, function (word) {
-        app.removeReview(word, app);
-    });
+    registerCommand(Command.REVIEW, (word) => { app.removeReview(word, app); });
     registerCommand(Command.LEARN, (word) => { app.learn(word, app); });
     registerCommand(Command.MASTERED, (word) => { app.mastered(word, app); });
     registerCommand(Command.READ, (data) => { app.read(data, app); });
@@ -27,4 +35,3 @@ function deactivate() {
     //
 }
 exports.deactivate = deactivate;
-//# sourceMappingURL=extension.js.map

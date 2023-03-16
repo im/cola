@@ -32,4 +32,3 @@ const addWordTask = (list, callback) => {
     }
 };
 exports.addWordTask = addWordTask;
-//# sourceMappingURL=dictionary.js.map

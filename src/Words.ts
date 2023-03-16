@@ -8,9 +8,9 @@ import MasteredStorage from './storage/mastered'
 import ReviewStorage from './storage/review'
 import parse from './utils/parse'
 import WebviewPanel from './WebviewPanel'
-const moment = require('moment');
 import { addWordTask, localDict } from './utils/dictionary'
 import * as Command from './Command'
+import deteFormat from './utils/dateFormat'
 
 class WordsApp {
     learnWords: any
@@ -71,7 +71,7 @@ class WordsApp {
     }
 
     format (word:string) {
-        return word + '|' + moment().format('YYYY-MM-DD')
+        return word + '|' + deteFormat()
         // return word + '|' + '2023-03-15'
     }
 

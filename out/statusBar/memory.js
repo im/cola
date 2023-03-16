@@ -15,4 +15,3 @@ const update = (flag) => {
 exports.default = {
     update
 };
-//# sourceMappingURL=memory.js.map

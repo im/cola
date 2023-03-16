@@ -17,4 +17,3 @@ exports.default = (text) => {
     wordsSet.clear();
     return wordsList;
 };
-//# sourceMappingURL=parse.js.map

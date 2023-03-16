@@ -28,4 +28,3 @@ const update = (message) => {
 exports.default = {
     update
 };
-//# sourceMappingURL=basic.js.map

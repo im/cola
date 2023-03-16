@@ -43,4 +43,3 @@ exports.default = {
     remove,
     get
 };
-//# sourceMappingURL=review.js.map

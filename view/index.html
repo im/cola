@@ -166,6 +166,10 @@
             },
             keydown (e) {
                 const code = e.keyCode
+                if (code === 49) {
+                    play(this.currentWord.word)
+                    return
+                }
 
                 if (code === 13 && this.isSuccess) {
                     if (this.isLearn) {
@@ -230,7 +234,6 @@
                 this.wordData = source
 
                 const { data, command, trigger } = source
-                console.log('source', source);
                 const { word } = data
 
                 this.$nextTick(() => {

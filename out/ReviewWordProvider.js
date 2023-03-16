@@ -137,4 +137,3 @@ class WordGroup extends vscode_1.TreeItem {
     }
 }
 exports.default = ReviewWordProvider;
-//# sourceMappingURL=ReviewWordProvider.js.map

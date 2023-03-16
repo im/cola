@@ -125,4 +125,3 @@ class WordGroup extends vscode_1.TreeItem {
     }
 }
 exports.default = WordProvider;
-//# sourceMappingURL=WordProvider.js.map

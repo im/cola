@@ -9,4 +9,3 @@ exports.READ = 'cola.read';
 exports.MEMORY = 'cola.memory';
 exports.ADD_REVIEW = 'cola.addReview';
 exports.REMOVE_REVIEW = 'cola.removeReview';
-//# sourceMappingURL=Command.js.map

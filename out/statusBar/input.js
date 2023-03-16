@@ -18,4 +18,3 @@ const update = (message, isError) => {
 exports.default = {
     update
 };
-//# sourceMappingURL=input.js.map

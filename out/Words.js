@@ -10,9 +10,9 @@ const mastered_1 = require("./storage/mastered");
 const review_1 = require("./storage/review");
 const parse_1 = require("./utils/parse");
 const WebviewPanel_1 = require("./WebviewPanel");
-const moment = require('moment');
 const dictionary_1 = require("./utils/dictionary");
 const Command = require("./Command");
+const dateFormat_1 = require("./utils/dateFormat");
 class WordsApp {
     constructor(context) {
         this.isMemory = false;
@@ -60,7 +60,7 @@ class WordsApp {
         this.masteredWords.flush();
     }
     format(word) {
-        return word + '|' + moment().format('YYYY-MM-DD');
+        return word + '|' + (0, dateFormat_1.default)();
         // return word + '|' + '2023-03-15'
     }
     initReview() {
@@ -155,4 +155,3 @@ class WordsApp {
     }
 }
 exports.default = WordsApp;
-//# sourceMappingURL=Words.js.map

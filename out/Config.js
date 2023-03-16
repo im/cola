@@ -28,4 +28,3 @@ exports.autoRefresh = new Config('cola.autoRefresh');
 exports.configReload = vscode_1.workspace.onDidChangeConfiguration(() => {
     configAll.forEach((item) => item.trigger());
 });
-//# sourceMappingURL=Config.js.map

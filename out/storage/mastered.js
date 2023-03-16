@@ -37,4 +37,3 @@ exports.default = {
     add,
     remove
 };
-//# sourceMappingURL=mastered.js.map

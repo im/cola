@@ -72,4 +72,3 @@ exports.default = (context, app) => {
     }
     return _readPanel.webview;
 };
-//# sourceMappingURL=WebviewPanel.js.map
