@@ -72,6 +72,12 @@ export default (context:any, app:any) => {
             if (handleType === 'removeReview') {
                 return app.removeReview(removeWord, app)
             }
+            if (handleType === 'addMastered') {
+                return app.learn(data.word, app)
+            }
+            if (handleType === 'memory') {
+                app.isMemory = !app.isMemory
+            }
             inputStatusBar.update(inputText(text), isError)
             fillStatusBar.update(fillText(text))
             showStatusBar.update(showText(data.word, app))

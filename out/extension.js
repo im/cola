@@ -28,7 +28,7 @@ function activate(context) {
     registerCommand(Command.LEARN, (word) => { app.learn(word, app); });
     registerCommand(Command.MASTERED, (word) => { app.mastered(word, app); });
     registerCommand(Command.READ, (data) => { app.read(data, app); });
-    registerCommand(Command.MEMORY, (data) => { app.memory(data, app); });
+    // registerCommand(Command.MEMORY, (data) => { app.memory(data,app) });
 }
 exports.activate = activate;
 function deactivate() {

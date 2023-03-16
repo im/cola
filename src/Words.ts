@@ -3,7 +3,7 @@ import WordProvider from './WordProvider'
 import ReviewWordProvider from './ReviewWordProvider'
 import { configReload, autoRefresh } from './Config'
 import basicStatusBar from './statusBar/basic'
-import memoryStatusBar from './statusBar/memory'
+// import memoryStatusBar from './statusBar/memory'
 import MasteredStorage from './storage/mastered'
 import ReviewStorage from './storage/review'
 import parse from './utils/parse'
@@ -159,7 +159,7 @@ class WordsApp {
 
     memory (source:any, app:any) {
         this.isMemory = !this.isMemory
-        memoryStatusBar.update(this.isMemory)
+        // memoryStatusBar.update(this.isMemory)
     }
 
     read (source:any, app:any) {

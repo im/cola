@@ -45,7 +45,9 @@
     const HANDLE_TYPE = {
         INPUT: 'input',
         REVIEW: 'review',
-        REMOVE_REVIEW: 'removeReview'
+        REMOVE_REVIEW: 'removeReview',
+        ADD_MASTERED: 'addMastered',
+        MEMORY: 'memory'
     }
 
     const play = (word) => {
@@ -166,6 +168,21 @@
             },
             keydown (e) {
                 const code = e.keyCode
+
+                if (code === 9) {
+                    this.handleMemory()
+                    e.returnValue = false
+                    return false
+                }
+                
+                if (code === 192) {
+                    if (this.isLearn) {
+                        this.addMastered()
+                    }
+                    e.returnValue = false
+                    return false
+                }
+
                 if (code === 49) {
                     play(this.currentWord.word)
                     return
@@ -215,6 +232,16 @@
                 this.postMessage()
                 this.handleType = HANDLE_TYPE.INPUT
             },
+            handleMemory () {
+                this.handleType = HANDLE_TYPE.MEMORY
+                this.postMessage()
+                this.handleType = HANDLE_TYPE.INPUT
+            },
+            addMastered () {
+                this.handleType = HANDLE_TYPE.ADD_MASTERED
+                this.postMessage()
+                this.handleType = HANDLE_TYPE.INPUT
+            },
             postMessage(params = {}) {
                 const { data, command, trigger } = app.wordData
                 vscode.postMessage({
@@ -246,11 +273,18 @@
                     }
 
                     if (command === COMMAND.ADD_REVIEW) {
-                        this.prev()
+                        this.index = this.getCurrentIndex(this.index)
+                        this.text = ''
                     }
 
                     if (command === COMMAND.REMOVE_REVIEW) {
-                        this.next()
+                        this.index = this.getCurrentIndex(this.index)
+                        this.text = ''
+                    }
+
+                    if (command === COMMAND.LEARN) {
+                        this.index = this.getCurrentIndex(this.index)
+                        this.text = ''
                     }
 
                     this.$nextTick(() => {

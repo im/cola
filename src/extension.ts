@@ -30,7 +30,7 @@ export function activate (context: vscode.ExtensionContext) {
     registerCommand(Command.LEARN, (word) => { app.learn(word,app) });
     registerCommand(Command.MASTERED, (word) => { app.mastered(word,app) });
     registerCommand(Command.READ, (data) => { app.read(data,app) });
-    registerCommand(Command.MEMORY, (data) => { app.memory(data,app) });
+    // registerCommand(Command.MEMORY, (data) => { app.memory(data,app) });
 }
 
 export function deactivate () {

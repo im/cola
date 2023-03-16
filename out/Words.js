@@ -5,7 +5,7 @@ const WordProvider_1 = require("./WordProvider");
 const ReviewWordProvider_1 = require("./ReviewWordProvider");
 const Config_1 = require("./Config");
 const basic_1 = require("./statusBar/basic");
-const memory_1 = require("./statusBar/memory");
+// import memoryStatusBar from './statusBar/memory'
 const mastered_1 = require("./storage/mastered");
 const review_1 = require("./storage/review");
 const parse_1 = require("./utils/parse");
@@ -138,7 +138,7 @@ class WordsApp {
     }
     memory(source, app) {
         this.isMemory = !this.isMemory;
-        memory_1.default.update(this.isMemory);
+        // memoryStatusBar.update(this.isMemory)
     }
     read(source, app) {
         source.data.word = source.word;

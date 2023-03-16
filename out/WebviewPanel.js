@@ -61,6 +61,12 @@ exports.default = (context, app) => {
             if (handleType === 'removeReview') {
                 return app.removeReview(removeWord, app);
             }
+            if (handleType === 'addMastered') {
+                return app.learn(data.word, app);
+            }
+            if (handleType === 'memory') {
+                app.isMemory = !app.isMemory;
+            }
             input_1.default.update(inputText(text), isError);
             fill_1.default.update(fillText(text));
             show_1.default.update(showText(data.word, app));
