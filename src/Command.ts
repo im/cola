@@ -1,0 +1,8 @@
+export const REFRESH = 'cola.refresh'
+export const REVIEW = 'cola.review'
+export const MASTERED = 'cola.mastered'
+export const LEARN = 'cola.learn'
+export const READ = 'cola.read'
+export const MEMORY = 'cola.memory'
+export const ADD_REVIEW = 'cola.addReview'
+export const REMOVE_REVIEW = 'cola.removeReview'

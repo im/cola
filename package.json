@@ -1,52 +1,143 @@
 {
-    "name": "coke",
-    "displayName": "coke",
-    "description": "",
-    "version": "0.0.1",
+    "name": "cola",
+    "displayName": "Cola",
+    "publisher": "im",
+    "description": "hello world",
+    "version": "1.0.4",
     "engines": {
         "vscode": "^1.76.0"
     },
     "categories": [
         "Other"
     ],
+    "icon": "resources/icon.png",
+    "repository": "https://github.com/im/cola",
     "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
         "viewsContainers": {
-			"activitybar": [
-				{
-					"id": "huile8-explorer",
-					"title": "Coke",
-					"icon": "resources/icon.png"
-				}
-			]
-		},
+            "activitybar": [
+                {
+                    "id": "cola-explorer",
+                    "title": "Cola",
+                    "icon": "resources/cola.png"
+                }
+            ]
+        },
         "views": {
-			"explorer": [
-				{
-					"id": "huile8-will-mastering-main",
-					"name": "陌生单词"
-				}
-			],
-			"huile8-explorer": [
-				{
-					"id": "huile8-will-mastering",
-					"name": "陌生单词"
-				},
-				{
-					"id": "huile8-mastered",
-					"name": "已掌握单词"
-				}
-			]
-		},
+            "explorer": [
+                {
+                    "id": "cola-learn-main",
+                    "name": "Learn"
+                }
+            ],
+            "cola-explorer": [
+                {
+                    "id": "cola-learn",
+                    "name": "Learn"
+                },
+                {
+                    "id": "cola-review",
+                    "name": "Review"
+                },
+                {
+                    "id": "cola-mastered",
+                    "name": "Mastered"
+                }
+            ]
+        },
         "commands": [
             {
-                "command": "coke.helloWorld",
-                "title": "Hello World"
+                "command": "cola.refresh",
+                "title": "重新刷新文件",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+				"command": "cola.read",
+				"title": "朗读"
+			},
+            {
+				"command": "cola.memory",
+				"title": "记忆模式"
+			},
+            {
+                "command": "cola.learn",
+                "title": "添加到 已学会",
+                "icon": {
+                    "light": "resources/light/learn.svg",
+                    "dark": "resources/dark/learn.svg"
+                }
+            },
+            {
+                "command": "cola.review",
+                "title": "添加到 学习",
+                "icon": {
+                    "light": "resources/light/review.svg",
+                    "dark": "resources/dark/review.svg"
+                }
+            },
+            {
+                "command": "cola.mastered",
+                "title": "添加到 学习",
+                "icon": {
+                    "light": "resources/light/mastered.svg",
+                    "dark": "resources/dark/mastered.svg"
+                }
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "cola.refresh",
+                    "group": "navigation",
+                    "when": "view =~ /cola-learn|cola-review|cola-mastered/"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "cola.learn",
+                    "when": "view == cola-learn && viewItem == word",
+                    "group": "inline"
+                },
+                {
+                    "command": "cola.review",
+                    "when": "view == cola-review && viewItem == word",
+                    "group": "inline"
+                },
+                {
+                    "command": "cola.mastered",
+                    "when": "view == cola-mastered && viewItem == word",
+                    "group": "inline"
+                }
+            ]
+        },
+        "configuration": [
+            {
+                "title": "Cola",
+                "properties": {
+                    "cola.autoRefresh": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "是否开启打开文件自动提取单词的功能"
+                    },
+                    "cola.cdn": {
+                        "type": "object",
+                        "default": {
+                            "vue": "https://unpkg.com/vue@3.2.47/dist/vue.global.js",
+                            "vconsole": "https://unpkg.com/vconsole@3.15.0/dist/vconsole.min.js"
+                        },
+                        "description": "webview 使用的 vue "
+                    }
+                }
             }
         ]
     },
     "scripts": {
+        "dict.init-github": "git clone https://github.com/mqycn/huile8-ecdict.git ../huile8-ecdict",
+        "dict.update": "cd ../huile8-ecdict && git pull && cnpm install && npm run make",
         "vscode:prepublish": "pnpm run compile",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
@@ -56,16 +147,17 @@
     },
     "devDependencies": {
         "@tangxiaomi/eslint-config": "^0.0.3",
-        "@types/vscode": "^1.76.0",
         "@types/glob": "^8.1.0",
         "@types/mocha": "^10.0.1",
         "@types/node": "16.x",
+        "@types/vscode": "^1.76.0",
         "@typescript-eslint/eslint-plugin": "^5.53.0",
         "@typescript-eslint/parser": "^5.53.0",
+        "@vscode/test-electron": "^2.2.3",
         "eslint": "^8.34.0",
         "glob": "^8.1.0",
         "mocha": "^10.2.0",
-        "typescript": "^4.9.5",
-        "@vscode/test-electron": "^2.2.3"
+        "moment": "^2.29.4",
+        "typescript": "^4.9.5"
     }
 }

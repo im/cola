@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="vconsole" defer></script> -->
+    <script src="vue" defer></script>
+    <title>Cola</title>
+</head>
+<style>
+    #app {
+        opacity: 0;
+    }
+</style>
+<body>
+    <div id="app" >
+        index: {{index}}
+        isError: {{isError}}<br />
+        isSuccess: > {{isSuccess}}<br />
+        currentWord:{{currentWord}}<br />
+        words:{{words}}<br />
+        trigger:{{trigger}}<br />
+        wordArray: {{wordArray}}<br />
+        textArray: {{textArray}}<br />
+        <input type="text" @blur="blur" @keydown="keydown" v-model="text" />
+    </div>
+    <audio ></audio>   
+</body>
+</html>
+
+<script type="module">
+    // new window.VConsole()
+    const vscode = acquireVsCodeApi();
+    const COMMAND = {
+        REFRESH:'cola.refresh',
+        REVIEW:'cola.review',
+        MASTERED:'cola.mastered',
+        LEARN:'cola.learn',
+        READ:'cola.read',
+        ADD_REVIEW: 'cola.addReview',
+        REMOVE_REVIEW: 'cola.removeReview'
+    }
+
+    const HANDLE_TYPE = {
+        INPUT: 'input',
+        REVIEW: 'review',
+        REMOVE_REVIEW: 'removeReview'
+    }
+
+    const play = (word) => {
+       const audio =  document.querySelector('audio')
+       audio.src = `http://dict.youdao.com/dictvoice?type=2&audio=${word}`
+       const utterance = new SpeechSynthesisUtterance(word);
+       speechSynthesis.speak(utterance);
+    }
+    window.addEventListener('message', event => {
+        const source = event.data
+
+        app.updateData({...source})
+    });
+
+    const { createApp } = Vue
+
+    const app = createApp({
+        data() {
+            return {
+                text: '',
+                wordData: {},
+                index: 0,
+                handleType: HANDLE_TYPE.INPUT,
+                trigger: ''
+            }
+        },
+        computed: {
+            localDict () {
+                return this.wordData.localDict || {}
+            },
+            wordArray () {
+                return [...this.currentWord.word]
+            },
+            textArray () {
+                return [...this.text]
+            },
+            isLearn () {
+                return this.trigger === COMMAND.LEARN
+            },
+            isReview () {
+                return this.trigger === COMMAND.REVIEW
+            },
+            words () {
+                const map = {
+                    [COMMAND.LEARN]: 'learnWordsTree',
+                    [COMMAND.REVIEW]: 'reviewWordsTree',
+                    [COMMAND.MASTERED]: 'masteredWordsTree',
+                }
+                return this.formatWords(this.wordData[map[this.trigger]] || [])
+            },
+            currentWord () {
+                const word = this.format(this.words[this.index])
+                const data = this.localDict[word] || {}
+                return  {
+                    word,
+                    ...data
+                }
+            },
+            isSuccess () {
+                const arr = this.textArray.map((v, index) => v.toLocaleLowerCase() === (this.wordArray[index] || '').toLocaleLowerCase()).filter(Boolean)
+                return arr.length === this.wordArray.length
+            },
+            isError () {
+                const arr = this.textArray.map((v, index) => v.toLocaleLowerCase() === (this.wordArray[index] || '').toLocaleLowerCase()).filter(Boolean)
+                return arr.length !== this.textArray.length
+            }
+        },
+        watch: {
+            text () {
+                this.$nextTick(() => {
+                    this.postMessage()
+                })
+            }
+        },
+        methods: {
+            getCurrentIndex (index){
+                const len = this.words.length
+                if (!len) {
+                    return 0
+                }
+                if (index > len - 1) {
+                    return 0
+                }
+
+                if (index < 0) {
+                    return len - 1
+                }
+                return index
+            },
+            next () {
+                const index = this.index + 1
+                this.index = this.getCurrentIndex(index)
+                this.text = ''
+                play(this.currentWord.word)
+                this.postMessage()
+            },
+            prev () {
+                const index = this.index - 1
+                this.index = this.getCurrentIndex(index)
+                this.text = ''
+                play(this.currentWord.word)
+                this.postMessage()
+            },
+            format (word) {
+                return (word || '').split('|')[0]
+            },
+            formatWords (words) {
+                return words.reduce((acc, cur) => {
+                    acc = acc.concat(cur.children || [])
+                    return acc
+                }, [])
+            },
+            focus () {
+                document.querySelector('input').focus()
+            },
+            blur () {
+                this.focus()
+            },
+            keydown (e) {
+                const code = e.keyCode
+
+                if (code === 13 && this.isSuccess) {
+                    if (this.isLearn) {
+                        return this.addReview()
+                    }
+
+                    if (this.isReview) {
+                        return this.removeReview()
+                    }
+                    this.next()
+                    return
+                }
+
+                if (code === 32) {
+                    this.isSuccess && this.next()
+                }
+
+                if (code === 39) {
+                    this.next()
+                }
+                if (code === 37) {
+                    this.prev()
+                }
+                if (this.textArray.length >= this.wordArray.length && code !== 8) {
+                    e.returnValue = false
+                    return false
+                }
+                if (code === 8) {
+                    this.text = ''
+                    return
+                }
+                e.returnValue = (code >= 65 && code <= 90)
+            },
+            removeReview () {
+                this.handleType = HANDLE_TYPE.REMOVE_REVIEW
+                this.postMessage({
+                    removeWord: this.words[this.index]
+                })
+                this.handleType = HANDLE_TYPE.INPUT
+            },
+            addReview () {
+                this.handleType = HANDLE_TYPE.REVIEW
+                this.postMessage()
+                this.handleType = HANDLE_TYPE.INPUT
+            },
+            postMessage(params = {}) {
+                const { data, command, trigger } = app.wordData
+                vscode.postMessage({
+                    handleType:this.handleType,
+                    command,
+                    trigger,
+                    isError: this.isError,
+                    data: this.currentWord,
+                    text: this.text,
+                    ...params
+                })
+            },
+            setIndex (word) {
+                this.index = this.words.findIndex(w => this.format(w) === word)
+            },
+            updateData (source) {
+                this.wordData = source
+
+                const { data, command, trigger } = source
+                console.log('source', source);
+                const { word } = data
+
+                this.$nextTick(() => {
+                    if (command === COMMAND.READ) {
+                       this.$nextTick(() => {
+                            play(word)
+                            this.trigger = trigger
+                            this.setIndex(word)
+                       })
+                    }
+
+                    if (command === COMMAND.ADD_REVIEW) {
+                        this.prev()
+                    }
+
+                    if (command === COMMAND.REMOVE_REVIEW) {
+                        this.next()
+                    }
+
+                    this.$nextTick(() => {
+                        this.postMessage()
+                    })
+                })
+            }
+        },
+        mounted () {
+            this.$nextTick(() => {
+                this.focus()
+            })
+        }
+    }).mount('#app')
+</script>
