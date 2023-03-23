@@ -14,7 +14,7 @@ const getStatus = () => {
 const statusBar = window.createStatusBarItem(StatusBarAlignment.Right);
 statusBar.text = getStatus();
 statusBar.show();
-statusBar.tooltip = '会了吧';
+statusBar.tooltip = 'Cola';
 statusBar.command = Command.REFRESH;
 
 autoRefresh.change(() => {

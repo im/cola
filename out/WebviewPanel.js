@@ -47,7 +47,7 @@ const showText = (word, app) => {
 };
 exports.default = (context, app) => {
     if (!_readPanel) {
-        const panel = _readPanel = vscode.window.createWebviewPanel('ReadPanel', 'Cola', vscode.ViewColumn.One, {
+        const panel = _readPanel = vscode.window.createWebviewPanel('ReadPanel', '', vscode.ViewColumn.One, {
             enableScripts: true,
             retainContextWhenHidden: true
         });

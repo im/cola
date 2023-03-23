@@ -52,7 +52,7 @@ export default (context:any, app:any) => {
 
         const panel = _readPanel = vscode.window.createWebviewPanel(
             'ReadPanel',
-            'Cola',
+            '',
             vscode.ViewColumn.One,
             {
                 enableScripts: true,

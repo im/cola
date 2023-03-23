@@ -12,7 +12,7 @@ const getStatus = () => {
 const statusBar = vscode_1.window.createStatusBarItem(vscode_1.StatusBarAlignment.Right);
 statusBar.text = getStatus();
 statusBar.show();
-statusBar.tooltip = '会了吧';
+statusBar.tooltip = 'Cola';
 statusBar.command = Command.REFRESH;
 Config_1.autoRefresh.change(() => {
     statusBar.text = getStatus();

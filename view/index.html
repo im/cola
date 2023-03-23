@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <script src="vconsole" defer></script> -->
     <script src="vue" defer></script>
-    <title>Cola</title>
+    <title></title>
 </head>
 <style>
     #app {
@@ -185,7 +185,8 @@
 
                 if (code === 49) {
                     play(this.currentWord.word)
-                    return
+                    e.returnValue = false
+                    return false
                 }
 
                 if (code === 13 && this.isSuccess) {
